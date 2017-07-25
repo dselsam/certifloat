@@ -49,7 +49,7 @@ calc  err (x * (1 + ε)) x
 notation `|` x `|` := norm x
 --notation `⟦` x `;` y `⟧` := err x y
 
-def O_1 (f : ℝ → ℝ) : Prop :=
+def O₁ (f : ℝ → ℝ) : Prop :=
   ∃ (c : ℝ) (ε₀ : ℝ),
     ∀ (ε : ℝ),
       |ε| ≤ |ε₀| → |f ε| ≤ c * ε
@@ -83,7 +83,7 @@ namespace certifloat
 def backwards_stable₂ (algorithm : ℝ → ℝ → ℝ → ℝ) (problem : ℝ → ℝ → ℝ) : Prop :=
   ∀ (x y : ℝ), x ≠ 0 → y ≠ 0 → ∃ (x₀ y₀ : ℝ → ℝ),
     (∀ (ε_m : ℝ), algorithm ε_m x y = problem (x₀ ε_m) (y₀ ε_m))
-  ∧ O_1 (λ ε_m, err (x₀ ε_m) x) ∧ O_1 (λ ε_m, err (y₀ ε_m) y)
+  ∧ O₁ (λ ε_m, err (x₀ ε_m) x) ∧ O₁ (λ ε_m, err (y₀ ε_m) y)
 
 inductive op : Type
 | add, mul, sub, div
@@ -155,10 +155,10 @@ calc  sub ε_m (fl ε_m x) (fl ε_m y)
     - y * (1 + ε_fl ε_m y) * (1 + ε_sub ε_m (x * (1 + ε_fl ε_m x)) (y * (1 + ε_fl ε_m y))) : by simp [left_distrib, right_distrib]
 ... = x' x y ε_m - y' x y ε_m : by simp [x', y']
 
-lemma x'_close_enough : ∀ (x y : ℝ), x ≠ 0 → O_1 (λ ε_m, err (x' x y ε_m) x) :=
+lemma x'_close_enough : ∀ (x y : ℝ), x ≠ 0 → O₁ (λ ε_m, err (x' x y ε_m) x) :=
 begin
 intros x y H_x,
-dunfold O_1,
+dunfold O₁,
 apply exists.intro (3 : ℝ),
 simp,
 dunfold x',
@@ -202,10 +202,10 @@ apply norm_ne_zero,
 exact H_x
 end
 
-lemma y'_close_enough : ∀ (x y : ℝ), y ≠ 0 → O_1 (λ ε_m, err (y' x y ε_m) y) :=
+lemma y'_close_enough : ∀ (x y : ℝ), y ≠ 0 → O₁ (λ ε_m, err (y' x y ε_m) y) :=
 begin
 intros x y H_y,
-dunfold O_1,
+dunfold O₁,
 apply exists.intro (3 : ℝ),
 simp,
 dunfold y',
